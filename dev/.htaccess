@@ -1,0 +1,136 @@
+<IfModule mod_rewrite.c>
+        RewriteEngine On
+        RewriteBase /
+
+        #########################
+        # ip exception
+        #########################
+
+        #RewriteCond %{HTTP_HOST} !^mail.ridibooks.com [NC]
+        RewriteCond %{REMOTE_ADDR} !111\.111\.111\.111
+        RewriteCond %{REMOTE_ADDR} !222\.222\.222\.222
+
+        # RidiStory IP for OAuth Testing
+        RewriteCond %{REMOTE_ADDR} !111\.111\.111\.111
+        RewriteCond %{REMOTE_ADDR} !222\.222\.222\.222
+
+        RewriteRule (.*) http://ridibooks.com [L,R]
+
+        #########################
+        # git route
+
+        RewriteCond %{REQUEST_URI} !^/?repo/
+        RewriteCond %{REQUEST_URI} !^/?dev\.php
+        RewriteCond %{REQUEST_URI} !^/robots\.txt
+        RewriteCond %{HTTP_HOST} ^git\.([a-z0-9_]+)\.dev\.ridi\.io [NC]
+        RewriteRule (.*) dev.php?repo=%1&git=$1%{QUERY_STRING} [L]
+
+        RewriteCond %{REQUEST_URI} !^/?repo/
+        RewriteCond %{REQUEST_URI} !^/?dev\.php
+        RewriteCond %{REQUEST_URI} !^/robots\.txt
+        RewriteCond %{HTTP_HOST} ^git\.([a-z0-9_]+)\.([a-z0-9_]+)\.dev\.ridi\.io [NC]
+        RewriteRule (.*) dev.php?repo=%2/%1&git=$1%{QUERY_STRING} [L]
+
+        RewriteCond %{REQUEST_URI} !^/?repo/
+        RewriteCond %{REQUEST_URI} !^/?dev\.php
+        RewriteCond %{REQUEST_URI} !^/robots\.txt
+        RewriteCond %{HTTP_HOST} ^git\.([a-z0-9_]+)\.([a-z0-9_]+)\.([a-z0-9_]+)\.dev\.ridi\.io [NC]
+        RewriteRule (.*) dev.php?repo=%3/%2/%1&git=$1%{QUERY_STRING} [L]
+
+        RewriteCond %{REQUEST_URI} !^/?repo/
+        RewriteCond %{REQUEST_URI} !^/?dev\.php
+        RewriteCond %{REQUEST_URI} !^/robots\.txt
+        RewriteCond %{HTTP_HOST} ^build\.([a-z0-9_]+)\.dev\.ridi\.io [NC]
+        RewriteCond %{DOCUMENT_ROOT}/repo/%1 !-d
+        RewriteRule (.*) dev.php?repo=%1&build=true [L]
+
+        RewriteCond %{REQUEST_URI} !^/?repo/
+        RewriteCond %{REQUEST_URI} !^/?dev\.php
+        RewriteCond %{REQUEST_URI} !^/robots\.txt
+        RewriteCond %{HTTP_HOST} ^make\.([a-z0-9_]+)\.dev\.ridi\.io [NC]
+        RewriteRule (.*) dev.php?repo=%1&make=true&make_command=$1%{QUERY_STRING} [L]
+
+        RewriteCond %{REQUEST_URI} !^/?repo/
+        RewriteCond %{REQUEST_URI} !^/?dev\.php
+        RewriteCond %{REQUEST_URI} !^/robots\.txt
+        RewriteCond %{HTTP_HOST} ^make\.([a-z0-9_]+).([a-z0-9_]+)\.dev\.ridi\.io [NC]
+        RewriteRule (.*) dev.php?repo=%2/%1&make=true&make_command=$1%{QUERY_STRING} [L]
+
+        RewriteCond %{REQUEST_URI} !^/?repo/
+        RewriteCond %{REQUEST_URI} !^/?dev\.php
+        RewriteCond %{REQUEST_URI} !^/robots\.txt
+        RewriteCond %{HTTP_HOST} ^make\.([a-z0-9_]+).([a-z0-9_]+).([a-z0-9_]+)\.dev\.ridi\.io [NC]
+        RewriteRule (.*) dev.php?repo=%3/%2/%1&make=true&make_command=$1%{QUERY_STRING} [L]
+
+        #########################
+        # api route
+
+        RewriteCond %{REQUEST_URI} !^/?repo/
+        RewriteCond %{REQUEST_URI} !^/?dev\.php
+        RewriteCond %{REQUEST_URI} !^/robots\.txt
+        RewriteCond %{HTTP_HOST} ^api\.([a-z0-9_]+)\.dev\.ridi\.io [NC]
+        RewriteRule (.*) http://127.0.0.1:8888/$0 [P]
+
+        RewriteCond %{REQUEST_URI} !^/?repo/
+        RewriteCond %{REQUEST_URI} !^/?dev\.php
+        RewriteCond %{REQUEST_URI} !^/robots\.txt
+        RewriteCond %{HTTP_HOST} ^([a-z0-9_]+)\.dev\.ridi\.io [NC]
+        RewriteCond %{REQUEST_URI} ^/noti/(.*) [NC]
+        RewriteRule ^noti/(.*)$ http://127.0.0.1:8888/$1 [P]
+
+        #########################
+
+        RewriteCond %{REQUEST_URI} !^/?repo/
+        RewriteCond %{REQUEST_URI} !^/?dev\.php
+        RewriteCond %{REQUEST_URI} !^/robots\.txt
+        RewriteCond %{HTTP_HOST} ^ezwel\.([a-z0-9_]+)\.dev\.ridi\.io [OR]
+        RewriteCond %{HTTP_HOST} ^([a-z0-9_]+)\.dev\.ridi\.io [NC]
+        RewriteRule (.*) repo/%1/ridibooks/$0 [L]
+
+        RewriteCond %{REQUEST_URI} !^/?repo/
+        RewriteCond %{REQUEST_URI} !^/?dev\.php
+        RewriteCond %{REQUEST_URI} !^/robots\.txt
+        RewriteCond %{HTTP_HOST} ^cp\.([a-z0-9_]+)\.dev\.ridi\.io [NC]
+        RewriteRule (.*) repo/%1/platform/cp/web/$0 [L]
+
+        RewriteCond %{REQUEST_URI} !^/?repo/
+        RewriteCond %{REQUEST_URI} !^/?dev\.php
+        RewriteCond %{REQUEST_URI} !^/robots\.txt
+        RewriteCond %{HTTP_HOST} ^admin\.([a-z0-9_]+)\.dev\.ridi\.io [NC]
+        RewriteRule ^store-operation/.* repo/%1/admin/$0 [L]
+
+        RewriteCond %{REQUEST_URI} !^/?repo/
+        RewriteCond %{REQUEST_URI} !^/?dev\.php
+        RewriteCond %{REQUEST_URI} !^/robots\.txt
+        RewriteCond %{HTTP_HOST} ^admin\.([a-z0-9_]+)\.dev\.ridi\.io [NC]
+        RewriteRule ^cs/.* repo/%1/admin/$0 [L]
+
+        RewriteCond %{REQUEST_URI} !^/?repo/
+        RewriteCond %{REQUEST_URI} !^/?dev\.php
+        RewriteCond %{REQUEST_URI} !^/robots\.txt
+        RewriteCond %{HTTP_HOST} ^admin\.([a-z0-9_]+)\.dev\.ridi\.io [NC]
+        RewriteRule ^admin/.* repo/%1/platform/$0 [L]
+
+        RewriteCond %{REQUEST_URI} !^/?repo/
+        RewriteCond %{REQUEST_URI} !^/?dev\.php
+        RewriteCond %{REQUEST_URI} !^/robots\.txt
+        RewriteCond %{HTTP_HOST} ^admin\.([a-z0-9_]+)\.dev\.ridi\.io [NC]
+        RewriteRule ^(bi|stat)/.* repo/%1/da/cms/$0 [L]
+
+        RewriteCond %{REQUEST_URI} !^/?repo/
+        RewriteCond %{REQUEST_URI} !^/?dev\.php
+        RewriteCond %{REQUEST_URI} !^/robots\.txt
+        RewriteCond %{HTTP_HOST} ^admin\.([a-z0-9_]+)\.dev\.ridi\.io [NC]
+        RewriteRule (.*) repo/%1/platform/cms/$0 [L]
+
+        RewriteCond %{REQUEST_URI} !^/?repo/
+        RewriteCond %{REQUEST_URI} !^/?dev\.php
+        RewriteCond %{REQUEST_URI} !^/robots\.txt
+        RewriteCond %{HTTP_HOST} ^([a-z0-9_]+)\.([a-z0-9_]+)\.dev\.ridi\.io [NC]
+        RewriteRule (.*) repo/%2/%1/$0 [L]
+
+        RewriteCond %{REQUEST_URI} !^/?repo/
+        RewriteCond %{REQUEST_URI} !^/?dev\.php
+        RewriteCond %{REQUEST_URI} !^/robots\.txt
+        RewriteRule (.*) http://ridibooks.com [L]
+</IfModule>
