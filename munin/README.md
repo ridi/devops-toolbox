@@ -16,9 +16,9 @@ uptime이 warning 한도를 넘으면 warning 한도를 +20일 늘린 후 asana�
       chown -R munin:munin devops-toolbox/munin
       chown munin:munin /etc/munin /etc/munin/munin.conf
     ```
-    
-    - composer 패키지를 설치하고 실제 사용할 [asana 프로젝트 id]와 [asana api 토큰]을 소스에 입력한다.
-    ```
+
+    - composer 패키지를 설치하고, 실제 사용할 [asana 프로젝트 id]와 [asana api 토큰]을 소스에 입력한다.
+    ```
       cd devops-toolbox/munin/asana_client
       composer update
       sed "s/<RIDI-PROJECT-ID>/[asana 프로젝트 id]/" create-uptime-task.php.template | sed "s/<ASANA-ACCESS-TOKEN>/[asana api 토큰]/" > create-uptime-task.php
