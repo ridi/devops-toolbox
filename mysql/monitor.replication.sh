@@ -4,6 +4,6 @@ MYSQL=`mysql --defaults-file=/etc/mysql/debian.cnf -e "SHOW GLOBAL STATUS LIKE '
 res="$MYSQL"
 if [ $res != "ON" ]; then
   touch replication.broken
-  echo 'Replication was broken' | /usr/bin/mail -s '[db] Replication was broken' sentinel@ridi.com
+  echo 'Replication was broken' | /usr/bin/mail -s "[`hostname`] Replication was broken" sentinel@ridi.com
 fi
 #MYSQL=`mysql --defaults-file=/etc/mysql/debian.cnf -e "SHOW SLAVE STATUS\G"`
