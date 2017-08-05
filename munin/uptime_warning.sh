@@ -26,4 +26,4 @@ sed "${lines[0]},${lines[1]} s/uptime.uptime.warning $uptime_max/uptime.uptime.w
 mv /etc/munin/munin.conf /etc/munin/munin.conf.$(date +%s) && mv /etc/munin/munin_tmp.conf /etc/munin/munin.conf
 
 # create asana task
-php /home/test/munin_integration/asana/asana_client/create-uptime-task.php $munin_node $uptime_now $uptime_max $uptime_new_max
+php /home/test/munin_integration/asana/asana_client/create-uptime-task.php $munin_node@$group $uptime_now $uptime_max $uptime_new_max
