@@ -1,0 +1,9 @@
+{
+    "config": {
+        "vendor-dir": "asana_client/vendor"
+    },
+    "require": {
+        "asana/asana": "^0.5.0",
+        "vlucas/phpdotenv": "^2.4"
+    }
+}

@@ -6,22 +6,17 @@ munin 관리를 위해 만든 스크립트들입니다
 uptime이 warning 한도를 넘으면 warning 한도를 +20일 늘린 후 asana에 이슈를 생성합니다.
 
 - 설치 방법
-    - munin서버에서 소스를 받는다.
+    - 소스를 받은 후 make를 실행한다
+    - make는 소스, munin 디렉토리, munin.conf의 소유자를 munin으로 변경하고 composer 패키지를 설치한다
     ```
       git clone https://github.com/ridibooks/devops-toolbox
-    ```
-    
-    - 소스, munin 디렉토리, munin.conf의 소유자를 munin으로 변경한다.
-    ```
-      chown -R munin:munin devops-toolbox/munin
-      chown munin:munin /etc/munin /etc/munin/munin.conf
+      cd devops-toolbox/munin && make
     ```
 
-    - composer 패키지를 설치하고, 실제 사용할 [asana 프로젝트 id]와 [asana api 토큰]을 소스에 입력한다.
+    - Asana 프로젝트 id와 Asana api 토큰을 .env에 입력한다.
     ```
-      cd devops-toolbox/munin/asana_client
-      composer update
-      sed "s/<RIDI-PROJECT-ID>/[asana 프로젝트 id]/" create-uptime-task.php.template | sed "s/<ASANA-ACCESS-TOKEN>/[asana api 토큰]/" > create-uptime-task.php
+      cp .env.sample .env
+      vim .env
     ```
     
     - munin.conf에 asana contact를 추가한다 (/path/to/munin은 devops-toolbox/munin까지의 절대경로)

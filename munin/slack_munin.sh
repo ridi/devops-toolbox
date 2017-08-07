@@ -14,14 +14,7 @@
 # # note: This has to be on one line for munin to parse properly
 # contact.slack.text ${if:cfields \u000A* CRITICALs:${loop<,>:cfields  ${var:label} is ${var:value} (outside range [${var:crange}])${if:extinfo : ${var:extinfo}}}.}${if:wfields \u000A* WARNINGs:${loop<,>:wfields  ${var:label} is ${var:value} (outside range [${var:wrange}])${if:extinfo : ${var:extinfo}}}.}${if:ufields \u000A* UNKNOWNs:${loop<,>:ufields  ${var:label} is ${var:value}${if:extinfo : ${var:extinfo}}}.}${if:fofields \u000A* OKs:${loop<,>:fofields  ${var:label} is ${var:value}${if:extinfo : ${var:extinfo}}}.}
 
-
-SLACK_CHANNEL="#infra-store"
-SLACK_WEBHOOK_URL="<RIDI-SLACK-WEBHOOK-URL>"
-SLACK_USERNAME="munin"
-SLACK_ICON_EMOJI=":bomb:"
-
-# Url to link from slack notifications
-MUNIN_URL="http://munin.ridi.io/"
+source .env
 
 input=`cat`
 
