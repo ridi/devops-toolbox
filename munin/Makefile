@@ -18,3 +18,9 @@ set-owner: check
 composer:
 	composer install
 
+test:
+ifndef TEST_SERVER_NAME
+	$(eval TEST_SERVER_NAME := $(shell read -p "Enter server name to test: " REPLY; echo $$REPLY))
+endif
+	php asana_client/create-uptime-task.php $(TEST_SERVER_NAME) 180.1 180 200
+
