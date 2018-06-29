@@ -2,6 +2,8 @@
 
 # uptime_warning.sh [label] [group] [munin_node] [uptime_now] [uptime_max]
 
+set -e
+
 label=$1
 if [ "$label" != "uptime" ]
 then
@@ -18,7 +20,7 @@ if [ $(echo "$uptime_now < $uptime_max"|bc) = 1 ]; then
 fi
 
 base_dir=$(dirname $0)
-munin_dir=/etc/munin
+munin_dir=${MUNIN_DIR}
 
 source $base_dir/.env
 
