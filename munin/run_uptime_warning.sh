@@ -4,7 +4,7 @@ base_dir=$(dirname $0)
 source $base_dir/.env
 
 # Run script with given prameters
-$base_dir/uptime_warning.sh $@ &> $base_dir/uptime.log
+$base_dir/uptime_warning.sh $@
 
 # Check the last return code
 if [ $? != 0 ]; then

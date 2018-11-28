@@ -10,6 +10,10 @@ then
   exit
 fi
 
+base_dir=$(dirname $0)
+source $base_dir/.env
+munin_dir=${MUNIN_DIR}
+
 group=$2
 munin_node=$3
 uptime_now=$4
@@ -18,10 +22,6 @@ uptime_max=${5//:/}
 if [ $(echo "$uptime_now < $uptime_max"|bc) = 1 ]; then
   exit
 fi
-
-source $base_dir/.env
-base_dir=$(dirname $0)
-munin_dir=${MUNIN_DIR}
 
 uptime_new_max=`expr $uptime_max + $MUNIN_UPTIME_THRESHOLD_ADD`
 group_arr=(${group//-/ })
