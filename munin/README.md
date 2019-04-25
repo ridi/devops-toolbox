@@ -32,3 +32,9 @@ uptime이 warning 한도를 넘으면 warning 한도를 +20일 늘린 후 asana�
     contacts mail asana
     ...
     ```
+### debugging
+`munin` 계정으로 로그인하여 스크립트를 실행해본다.
+```
+su - munin --shell=/bin/bash
+run_uptime_warning.sh uptime 'performance;proxy' proxy155 100 10
+```
