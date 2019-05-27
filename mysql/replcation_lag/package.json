@@ -1,0 +1,8 @@
+{
+  "name": "metricReplicationLag",
+  "version": "1.0.0",
+  "license": "MIT",
+  "dependencies": {
+    "mysql2": "^1.6.4"
+  }
+}
