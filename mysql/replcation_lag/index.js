@@ -18,8 +18,9 @@ async function loadSSMParam(name) {
 }
 
 function putMetricData(namespace, metricName, value, unit) {
-    let cloudWatch = new AWS.CloudWatch();
-    let params = {
+    console.log(`LOG|${value}|${unit}|${metricName}|${namespace}`);
+
+    callCloudWatch({
         MetricData: [{
             MetricName: metricName,
             Value: value,
@@ -27,8 +28,29 @@ function putMetricData(namespace, metricName, value, unit) {
             Unit: unit,
         }],
         Namespace: namespace
-    };
-    console.log(`LOG|${value}|${unit}|${metricName}|${namespace}`);
+    });
+}
+
+function putGroupMetricData(namespace, metricName, dimension, value, unit) {
+    console.log(`LOG|${value}|${unit}|${dimension}|${metricName}|${namespace}`);
+
+    callCloudWatch({
+        MetricData: [{
+            MetricName: metricName,
+            Dimensions: [{
+                Name: 'Group',
+                Value: dimension
+            }],
+            Value: value,
+            Timestamp: new Date(),
+            Unit: unit,
+        }],
+        Namespace: namespace
+    });
+}
+
+function callCloudWatch(params) {
+    let cloudWatch = new AWS.CloudWatch();
 
     cloudWatch.putMetricData(params, function (err, data) {
         if (err) console.log(err, err.stack); // an error occurred
@@ -56,6 +78,17 @@ exports.handler = async (event, context, callback) => {
         let [rows, fields] = await dbConn.execute('SHOW SLAVE STATUS');
         let status = JSON.parse(JSON.stringify(rows))[0];
         putMetricData(namespace, metricName, status.Seconds_Behind_Master, 'Seconds');
+
+        let ioStatus = 0;
+        let sqlStatus = 0;
+        if (status.Slave_IO_Running === 'Yes') {
+            ioStatus = 1;
+        }
+        if (status.Slave_SQL_Running === 'Yes') {
+            sqlStatus = 1;
+        }
+        putGroupMetricData(namespace, metricName, 'Slave_IO_Running', ioStatus, 'Count');
+        putGroupMetricData(namespace, metricName, 'Slave_SQL_Running', sqlStatus, 'Count');
 
         await dbConn.end();
 
