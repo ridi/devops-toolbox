@@ -77,20 +77,21 @@ exports.handler = async (event, context, callback) => {
         });
         let [rows, fields] = await dbConn.execute('SHOW SLAVE STATUS');
         let status = JSON.parse(JSON.stringify(rows))[0];
+        await dbConn.end();
+
+
         putMetricData(namespace, metricName, status.Seconds_Behind_Master, 'Seconds');
 
-        let ioStatus = 0;
-        let sqlStatus = 0;
-        if (status.Slave_IO_Running === 'Yes') {
-            ioStatus = 1;
-        }
-        if (status.Slave_SQL_Running === 'Yes') {
-            sqlStatus = 1;
-        }
-        putGroupMetricData(namespace, metricName, 'Slave_IO_Running', ioStatus, 'Count');
-        putGroupMetricData(namespace, metricName, 'Slave_SQL_Running', sqlStatus, 'Count');
+        const metricNames = ['Slave_IO_Running', 'Slave_SQL_Running'];
+        for (let i = 0, loopi = metricNames.length; i < loopi; i++) {
+            let statusValue = 0;
+            if (status[metricNames[i]] === 'Yes') {
+                statusValue = 1;
+            }
 
-        await dbConn.end();
+            putGroupMetricData(namespace, metricName, metricNames[i], statusValue, 'Count');
+        }
+
 
         let response = {
             statusCode: 200,
