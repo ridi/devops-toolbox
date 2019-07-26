@@ -79,8 +79,9 @@ exports.handler = async (event, context, callback) => {
         let status = JSON.parse(JSON.stringify(rows))[0];
         await dbConn.end();
 
-
-        putMetricData(namespace, metricName, status.Seconds_Behind_Master, 'Seconds');
+        let secondBehindMaster = status.Seconds_Behind_Master;
+        if (secondBehindMaster === null) secondBehindMaster = 999999; // 경보 범위를 넘어서는 임의의 큰 값
+        putMetricData(namespace, metricName, secondBehindMaster, 'Seconds');
 
         const metricNames = ['Slave_IO_Running', 'Slave_SQL_Running'];
         for (let i = 0, loopi = metricNames.length; i < loopi; i++) {
