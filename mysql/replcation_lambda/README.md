@@ -1,7 +1,5 @@
 ## 리플리케이션 모니터링
 
-[기존 PR](https://github.com/ridi/devops-toolbox/pull/4) 의 설명을 인용했습니다. 
-
 Replication 정보를 확인해서 CloudWatch에 전송하는 lambda 코드입니다.
 동일한 코드를 여러번 사용할 수 있도록 CloudWatch Event를 사용합니다
 
@@ -19,7 +17,7 @@ Replication 정보를 확인해서 CloudWatch에 전송하는 lambda 코드입�
 - VPC, 서브넷, 보안그룹을 설정 하고 오른쪽 상단의 저장을 눌러줍니다.
 
 - CloudWatch 서비스로 들어가서 이벤트-규칙 메뉴로 들어가 규칙 생성을 눌러줍니다.
-- 이벤트 소스는 일정 - 고정비율로 선택후 원하는 주기 (ex. 1분) 를 선택 후 대상 추가를 눌러 위에서 생성한 람다 함수를 선택합니다.
+- 이벤트 소스는 일정 - 고정비율로 선택 후 원하는 주기 (ex. 1분) 를 선택 후 대상 추가를 눌러 위에서 생성한 람다 함수를 선택합니다.
 - 입력 구성을 눌러 상수(JSON 텍스트) 를 눌러 필요한 정보를 넣어줍니다.
     ```
     {
@@ -41,6 +39,5 @@ Replication 정보를 확인해서 CloudWatch에 전송하는 lambda 코드입�
 
 # 추가 정보
 - CloudWatch 경보를 사용하여 위에서 기록한 지표를 선택 하여 알림을 만들 수 있습니다.
-- Lambda 런타임은 Node.js 10.x 보다 Node.js 8.10 으로 사용하는 것이 작은 속도 향상이 있습니다. [관련정보](https://epsagon.com/blog/aws-lambda-node-js-10-support-and-benchmark/) 
 - Lambda 함수 콘솔에서 인라인 편집기를 사용하여 디버깅을 할 수 있습니다.
 - Lambda 함수에서 SSM 연결시 Timeout 이 난다면 SSM 의 엔드포인트를 설정 해 보는 방법이 있습니다. [관련정보](https://stackoverflow.com/questions/52134100/parameter-store-request-timing-out-inside-of-aws-lambda)  
