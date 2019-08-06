@@ -39,5 +39,6 @@ Replication 정보를 확인해서 CloudWatch에 전송하는 lambda 코드입�
 
 ## 추가 정보
 - CloudWatch 경보를 사용하여 위에서 기록한 지표를 선택 하여 알림을 만들 수 있습니다.
+- Seconds_Behind_Master 가 null 인 경우의 값을 -1 로 하여 기준값 이상의 Lag 과 0 이하의 Broken 을 구분하여 알림 설정 할 수 있습니다.
 - Lambda 함수 콘솔에서 인라인 편집기를 사용하여 디버깅을 할 수 있습니다.
 - Lambda 함수에서 SSM 연결시 Timeout 이 난다면 SSM 의 엔드포인트를 설정 해 보는 방법이 있습니다. [관련정보](https://stackoverflow.com/questions/52134100/parameter-store-request-timing-out-inside-of-aws-lambda)  

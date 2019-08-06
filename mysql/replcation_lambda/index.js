@@ -12,7 +12,7 @@ async function loadSSMParam(name) {
     return new Promise((resolve, reject) => {
         ssm.getParameter(ssmParams, function (err, data) {
             if (err) {
-                console.log(err);
+                reject(err);
             } else {
                 resolve(data.Parameter.Value);
             }
@@ -87,7 +87,7 @@ exports.handler = async (event, context, callback) => {
 
         let secondBehindMaster = status.Seconds_Behind_Master;
         if (secondBehindMaster === null) {
-            secondBehindMaster = 999999; // 경보 범위를 넘어서는 임의의 큰 값
+            secondBehindMaster = -1; // 정상 범위를 벗어나는 값
         }
         putMetricData(namespace, metricName, secondBehindMaster, 'Seconds');
 
