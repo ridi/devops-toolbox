@@ -11,8 +11,11 @@ async function loadSSMParam(name) {
 
     return new Promise((resolve, reject) => {
         ssm.getParameter(ssmParams, function (err, data) {
-            if (err) console.log(err);
-            else resolve(data.Parameter.Value);
+            if (err) {
+                reject(err);
+            } else {
+                resolve(data.Parameter.Value);
+            }
         });
     });
 }
@@ -53,8 +56,11 @@ function callCloudWatch(params) {
     let cloudWatch = new AWS.CloudWatch();
 
     cloudWatch.putMetricData(params, function (err, data) {
-        if (err) console.log(err, err.stack); // an error occurred
-        else console.log(data); // successful response
+        if (err) {
+            console.log(err, err.stack); // an error occurred
+        } else {
+            console.log(data); // successful response
+        }
     });
 }
 
@@ -79,8 +85,11 @@ exports.handler = async (event, context, callback) => {
         let status = JSON.parse(JSON.stringify(rows))[0];
         await dbConn.end();
 
-
-        putMetricData(namespace, metricName, status.Seconds_Behind_Master, 'Seconds');
+        let secondBehindMaster = status.Seconds_Behind_Master;
+        if (secondBehindMaster === null) {
+            secondBehindMaster = -1; // 정상 범위를 벗어나는 값
+        }
+        putMetricData(namespace, metricName, secondBehindMaster, 'Seconds');
 
         const metricNames = ['Slave_IO_Running', 'Slave_SQL_Running'];
         for (let i = 0, loopi = metricNames.length; i < loopi; i++) {
