@@ -69,7 +69,7 @@ $task_note = "(스크립트에서 자동 생성된 Task입니다.)\n"
 $task_data = [
     'name' => $task_name,
     'notes' => $task_note,
-    'projects' => [ $project->id ],
+    'projects' => [ $project->gid ],
 ];
 
 if (isset($assignee_email)) {
@@ -82,7 +82,7 @@ $task = $client->tasks->createInWorkspace($ridi_id, $task_data);
 
 // Search section
 if (isset($section_name)) {
-    $sections = $client->projects->sections($project->id, null, ['iterator_type' => false, 'page_size' => null])->data;
+    $sections = $client->projects->sections($project->gid, null, ['iterator_type' => false, 'page_size' => null])->data;
     $section_arr = array_filter($sections, function($section) use ($section_name) {
         return $section->name == $section_name;
     });
@@ -99,5 +99,5 @@ if (isset($section_name)) {
 
 
 // Add subtasks
-$client->tasks->addSubtask($task->id, [ 'name' => 'uptime warning값 복구' ]);
-$client->tasks->addSubtask($task->id, [ 'name' => '재부팅' ]);
+$client->tasks->addSubtask($task->gid, [ 'name' => 'uptime warning값 복구' ]);
+$client->tasks->addSubtask($task->gid, [ 'name' => '재부팅' ]);
